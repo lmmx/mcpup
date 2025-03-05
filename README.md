@@ -111,6 +111,54 @@ from mypackage.mymodule import my_function
 result = my_function(**valid_args.model_dump(exclude_unset=True))
 ```
 
+## MCP Integration
+
+mcpup can be used to generate JSON schemas from Python packages, making it perfect for integration with Model Context Protocol (MCP) servers. MCP servers provide a standardized way for AI models to discover and use tools without custom integrations for each service.
+
+### Using mcpup with MCP Servers
+
+Generate Pydantic models with mcpup, then access the JSON schemas to create MCP-compatible tools:
+
+```python
+>>> from mcpup_models.requests import api
+>>> from pprint import pprint
+>>> api.Get.model
+<class 'pydantic_function_models.validated_function.Get'>
+>>> pprint(api.Get.model.model_json_schema())
+{'properties': {'args': {'default': None,
+                         'items': {},
+                         'title': 'Args',
+                         'type': 'array'},
+                'kwargs': {'default': None,
+                           'title': 'Kwargs',
+                           'type': 'object'},
+                'params': {'default': None, 'title': 'Params'},
+                'url': {'title': 'Url'},
+                'v__duplicate_kwargs': {'default': None,
+                                        'items': {'type': 'string'},
+                                        'title': 'V  Duplicate Kwargs',
+                                        'type': 'array'}},
+ 'required': ['url'],
+ 'title': 'Get',
+ 'type': 'object'}
+```
+
+### How This Powers MCP Servers
+
+MCP servers use JSON schemas to:
+
+1. **Define Tool Capabilities**: Each function in a package becomes a tool with a well-defined schema
+2. **Enable Natural AI Interaction**: AI can understand the schema and use tools correctly
+3. **Support Mode Switching**: Use with execution for actual API calls, or schema-only for documentation
+
+You can turn any Python package into a composition of MCP-compatible tools, allowing AI systems to:
+- Discover available functions
+- Understand parameter requirements
+- Validate inputs before execution
+- Generate proper API calls
+
+This approach makes Python packages accessible to AI systems in a standardized way, without requiring custom integration work for each package.
+
 ## Contributing
 
 Contributions welcome!
