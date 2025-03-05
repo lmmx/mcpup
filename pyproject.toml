@@ -1,56 +1,56 @@
 [build-system]
 build-backend = "pdm.backend"
 requires = [
-  "pdm-backend"
+    "pdm-backend",
 ]
 
 [project]
 authors = [
-  {email = "louismmx@gmail.com", name = "Louis Maddox"}
+    { email = "louismmx@gmail.com", name = "Louis Maddox" },
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
-  "Natural Language :: English",
-  "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python"
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python",
 ]
 dependencies = [
-  "pydantic>=2.0.0",
-  "pydantic-function-models>=0.1.10",
-  "click>=8.1.7",
-  "rich>=13.3.5"
+    "pydantic>=2.0.0",
+    "pydantic-function-models>=0.1.10",
+    "click>=8.1.7",
+    "rich>=13.3.5",
 ]
 description = "Generate Pydantic models for your Python package functions 🐶"
 name = "mcpup"
 readme = "README.md"
 requires-python = ">=3.10"
-version = "0.1.0"
+version = "0.1.1"
 
 [project.license]
 text = "MIT"
 
 [project.optional-dependencies]
 dev = [
-  "pdm-bump>=0.9.10",
-  "pdm>=2.22.3",
-  "pre-commit>=4.1.0",
-  "pytest>=8.3.4"
+    "pdm-bump>=0.9.10",
+    "pdm>=2.22.3",
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.4",
 ]
 docs = [
-  "livereload>=2.7.1",
-  "mkdocs-material[recommended,imaging]>=9.5.2",
-  "mkdocs-section-index>=0.3.8",
-  "mkdocs>=1.5.3",
-  "mkdocstrings[python]>=0.24.0",
-  "ruff>=0.9.5",
-  "urllib3<2"
+    "livereload>=2.7.1",
+    "mkdocs-material[recommended,imaging]>=9.5.2",
+    "mkdocs-section-index>=0.3.8",
+    "mkdocs>=1.5.3",
+    "mkdocstrings[python]>=0.24.0",
+    "ruff>=0.9.5",
+    "urllib3<2",
 ]
 
 [project.scripts]
@@ -62,18 +62,18 @@ Homepage = "https://github.com/lmmx/mcpup"
 
 [tool.ruff.lint]
 ignore = [
-  "C408",
-  "C901",
-  "E501",
-  "E722",
-  "E741"
+    "C408",
+    "C901",
+    "E501",
+    "E722",
+    "E741",
 ]
 select = [
-  "C",
-  "D",
-  "E",
-  "F",
-  "I",
-  "UP",
-  "W"
+    "C",
+    "D",
+    "E",
+    "F",
+    "I",
+    "UP",
+    "W",
 ]
