@@ -1,10 +1,10 @@
-site_name: DataPasta
+site_name: MCPup
 site_author: Louis Maddox
 site_description: >-
   Paste data as Python DataFrame definitions.
-site_url: https://datapasta.vercel.app
-repo_name: lmmx/datapasta
-repo_url: https://github.com/lmmx/datapasta
+site_url: https://mcpup.vercel.app
+repo_name: lmmx/mcpup
+repo_url: https://github.com/lmmx/mcpup
 strict: true
 watch: [src]
 
@@ -103,10 +103,7 @@ nav:
   - Getting Started: get_started.md
   - API Reference:
       - api/index.md
-      - api/clipboard.md
-      - api/clipboard_targets.md
-      - api/formatter.md
-      - api/html_parser.md
-      - api/main.md
-      - api/parser.md
-      - api/type_inference.md
+      - api/cli.md
+      - api/generator.md
+      - api/scanner.md
+      - api/utils.md
