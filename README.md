@@ -5,7 +5,6 @@
 [![PyPI](https://img.shields.io/pypi/v/mcpup.svg)](https://pypi.org/project/mcpup)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/mcpup.svg)](https://pypi.org/project/mcpup)
 [![License](https://img.shields.io/pypi/l/mcpup.svg)](https://pypi.python.org/pypi/mcpup)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/lmmx/mcpup/master.svg)](https://results.pre-commit.ci/latest/github/lmmx/mcpup/master)
 
 Automatically generate Pydantic models for all functions in a Python package.
 
@@ -43,7 +42,7 @@ mcpup package_name
 Options:
 
 ```
---output, -o PATH            Directory to save generated models [default: ./mcpup_models]
+--output, -o DIRECTORY       Directory to save generated models [default: ./mcpup_models]
 --install, -i                Install the package using uv before generating models
 --include-private            Include private functions (starting with underscore)
 --module, -m TEXT            Specific modules to include (can be used multiple times)

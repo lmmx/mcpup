@@ -1,0 +1,3 @@
+# cli
+
+::: mcpup.cli

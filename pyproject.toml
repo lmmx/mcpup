@@ -24,7 +24,7 @@ classifiers = [
 dependencies = [
   "pydantic>=2.0.0",
   "pydantic-function-models>=0.1.10",
-  "typer>=0.9.0",
+  "click>=8.1.7",
   "rich>=13.3.5"
 ]
 description = "Generate Pydantic models for your Python package functions 🐶"
@@ -54,7 +54,7 @@ docs = [
 ]
 
 [project.scripts]
-mcpup = "mcpup.cli:app"
+mcpup = "mcpup.cli:cli"
 
 [project.urls]
 "Bug Tracker" = "https://github.com/lmmx/mcpup/issues"

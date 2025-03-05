@@ -52,5 +52,9 @@ result = some_function(**valid_args.model_dump(exclude_unset=True))
     print(example)
 
 
+def test_main():
+    main()
+
+
 if __name__ == "__main__":
     main()

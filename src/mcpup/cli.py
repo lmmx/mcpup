@@ -4,7 +4,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-import typer
+import click
 from rich.console import Console
 from rich.panel import Panel
 from rich.syntax import Syntax
@@ -13,42 +13,41 @@ from mcpup.generator import generate_models
 from mcpup.scanner import scan_package
 from mcpup.utils import ensure_uv_installed
 
-app = typer.Typer(
-    help="Generate Pydantic models for your Python package functions 🐶",
-    add_completion=False,
-)
 console = Console()
 
 
-@app.command()
-def main(
-    package_name: str = typer.Argument(
-        ...,
-        help="Name of the package to generate models for",
-    ),
-    output_dir: Path = typer.Option(
-        Path("./mcpup_models"),
-        "--output",
-        "-o",
-        help="Directory to save generated models",
-    ),
-    install: bool = typer.Option(
-        False,
-        "--install",
-        "-i",
-        help="Install the package using uv before generating models",
-    ),
-    include_private: bool = typer.Option(
-        False,
-        "--include-private",
-        help="Include private functions (starting with underscore)",
-    ),
-    include_modules: list[str] | None = typer.Option(
-        None,
-        "--module",
-        "-m",
-        help="Specific modules to include (default: all modules)",
-    ),
+@click.command(help="Generate Pydantic models for your Python package functions 🐶")
+@click.argument("package_name", type=str)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(file_okay=False, dir_okay=True, path_type=Path),
+    default=Path("./mcpup_models"),
+    help="Directory to save generated models",
+)
+@click.option(
+    "--install",
+    "-i",
+    is_flag=True,
+    help="Install the package using uv before generating models",
+)
+@click.option(
+    "--include-private",
+    is_flag=True,
+    help="Include private functions (starting with underscore)",
+)
+@click.option(
+    "--module",
+    "-m",
+    multiple=True,
+    help="Specific modules to include (default: all modules)",
+)
+def cli(
+    package_name: str,
+    output: Path,
+    install: bool,
+    include_private: bool,
+    module: list[str],
 ):
     """Generate Pydantic models for all functions in a Python package."""
     console.print(
@@ -78,11 +77,11 @@ def main(
 
     try:
         # Ensure output directory exists
-        output_dir.mkdir(parents=True, exist_ok=True)
+        output.mkdir(parents=True, exist_ok=True)
 
         # Scan package to find all functions
         console.print(f"Scanning package: [bold]{package_name}[/]")
-        functions = scan_package(package_name, include_private, include_modules)
+        functions = scan_package(package_name, include_private, module or None)
 
         if not functions:
             console.print(f"[yellow]No functions found in package {package_name}[/]")
@@ -92,11 +91,11 @@ def main(
 
         # Generate models
         console.print("Generating Pydantic models...")
-        model_files = generate_models(functions, output_dir)
+        model_files = generate_models(functions, output)
 
         # Output summary
         console.print(
-            f"[bold green]Success![/] Generated {len(model_files)} model files in {output_dir}",
+            f"[bold green]Success![/] Generated {len(model_files)} model files in {output}",
         )
 
         # Show example usage
@@ -117,4 +116,4 @@ result = some_function(**valid_args.model_dump(exclude_unset=True))
 
 
 if __name__ == "__main__":
-    app()
+    cli()

@@ -1,0 +1,3 @@
+# generator
+
+::: mcpup.generator

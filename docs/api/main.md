@@ -1,3 +1,0 @@
-# main
-
-::: datapasta.main

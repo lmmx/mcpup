@@ -7,69 +7,68 @@ icon: material/human-greeting
 
 ## 1. Installation
 
-`datapasta` is [on PyPI](https://pypi.org/project/datapasta). Install with:
+`mcpup` is [on PyPI](https://pypi.org/project/mcpup). Install with:
 
 ```bash
-pip install datapasta
+pip install mcpup
 ```
 
 !!! info "Using `uv` (optional)"
     If you set up [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended for a smoother developer experience), you can install with:
     ```bash
-    uv pip install datapasta
+    uv pip install mcpup
     ```
-    or set up a project (e.g., `uv init --app --package`, `uv venv`, then activate the venv), and add `datapasta`:
+    or set up a project (e.g., `uv init --app --package`, `uv venv`, then activate the venv), and add `mcpup`:
     ```bash
-    uv add datapasta
+    uv add mcpup
     ```
-
-If you use Windows/MacOS (or a non-X11 clipboard on Linux) you will need the pyperclip extra when installing:
-
-```sh
-pip install datapasta[pyperclip]
-```
 
 ## 2. Usage
 
-`datapasta` provides a CLI tool called `datapasta`. To convert clipboard table data to Python code:
+`mcpup` provides a CLI tool to generate Pydantic models for all functions in a Python package. To generate models for a package:
 
 ```bash
-datapasta
+mcpup package_name
 ```
 
-To generate pandas code instead of polars, add the `--pandas` flag:
+This will scan the package and create validated Pydantic models for all public functions.
 
-```bash
-datapasta --pandas
-```
-
-This will generate Polars DataFrame code for the table data in your clipboard.
-
-(Note: you do not need to actually have Pandas or Polars installed to run this!)
+!!! tip "Install the package first"
+    If the package isn't already installed, use the `--install` flag:
+    ```bash
+    mcpup package_name --install
+    ```
 
 ### More CLI Examples
 
-- **Read from a file instead of clipboard**:
+- **Generate models for a specific module within a package**:
   ```bash
-  datapasta --file data.csv
-  ```
-- **Specify a separator (otherwise auto-detected)**:
-  ```bash
-  datapasta --file data.tsv --sep "\t"
-  ```
-- **Force header detection**:
-  ```bash
-  datapasta --header yes
+  mcpup pandas --module core --module dataframe
   ```
 
-For advanced usage like limiting rows, see the [CLI reference](index.md).
+- **Include private functions (those starting with underscore)**:
+  ```bash
+  mcpup requests --include-private
+  ```
+
+- **Specify a custom output directory**:
+  ```bash
+  mcpup polars --output ./my_models
+  ```
+
+For the complete list of options, run:
+
+```bash
+mcpup --help
+```
 
 ## 3. Local Development
 
 1. **Clone the Repo**:
    ```bash
-   git clone https://github.com/lmmx/datapasta.git
+   git clone https://github.com/lmmx/mcpup.git
    ```
+
 2. **Install Dependencies**:
    - If you're using [pdm](https://pdm.fming.dev/latest/):
      ```bash
@@ -79,16 +78,18 @@ For advanced usage like limiting rows, see the [CLI reference](index.md).
      ```bash
      pip install -e .
      ```
+
 3. **Optional: Pre-commit Hooks**:
    ```bash
    pre-commit install
    ```
-   This automatically runs lint checks (e.g., ruff, black) before each commit.
+   This automatically runs lint checks (e.g., ruff) before each commit.
 
-4. **Run Tests** (if applicable):
+4. **Run Tests**:
    ```bash
    pytest
    ```
+
 5. **Build/Serve Docs** (if included):
    ```bash
    mkdocs serve
@@ -97,40 +98,73 @@ For advanced usage like limiting rows, see the [CLI reference](index.md).
 
 ## 4. Example Workflow
 
-1. **Copy a table from a website**:
-   - Go to a website with tabular data
-   - Select and copy the table
+Let's walk through a complete example using `mcpup` to generate models for the popular `requests` library:
 
-2. **Generate the DataFrame code**:
+1. **Install mcpup and the target package**:
    ```bash
-   datapasta > table_code.py
+   pip install mcpup requests
    ```
 
-3. **Use the generated code in your project**:
-   ```py
-   import table_code
-   ```
-
-4. **Work with the data programmatically**:
+2. **Generate models for all functions in the package**:
    ```bash
-   datapasta | python -c "exec(open(0).read()); print(df.filter(pl.col('Size').str.contains('MB')).head(2))"
+   mcpup requests -o ./requests_models
    ```
-   This pipes the generated code directly to Python and filters rows containing "MB".
 
-## 5. Configuration
+3. **Use the generated models in your code**:
+   ```python
+   from requests_models.requests.api import Get
 
-`datapasta` primarily relies on:
-- **Clipboard access**: Works with system clipboard (handled by pyperclip)
-- **HTML parsing**: Automatically extracts tables from HTML content when available
-- **CLI Flags**: Control parsing, output format, and header detection:
-  - `--pandas`: Generate pandas code instead of Polars
-  - `--max-rows`: Limit maximum rows to parse (default: 10,000)
-  - `--header`: Control header detection (`auto`, `yes`, `no`)
-  - `--sep`: Specify delimiter/separator (auto-detected by default)
-  - `--legacy`: Use legacy clipboard access (no HTML support)
+   # Validate parameters for requests.get
+   params = Get.model.model_validate({
+       "url": "https://api.github.com/users/octocat",
+       "params": {"page": 1},
+       "headers": {"Accept": "application/json"}
+   })
+
+   # Call the function with validated parameters
+   import requests
+   response = requests.get(**params.model_dump(exclude_unset=True))
+   ```
+
+4. **Inspect model validation errors**:
+   ```python
+   try:
+       # This will fail validation (timeout should be a float or int)
+       params = Get.model.model_validate({
+           "url": "https://api.github.com/users/octocat",
+           "timeout": "not-a-number"
+       })
+   except Exception as e:
+       print(f"Validation error: {e}")
+   ```
+
+## 5. How It Works
+
+`mcpup` operates by:
+
+1. **Scanning the package**: Uses Python's `importlib` and `inspect` to find all functions
+2. **Analyzing signatures**: Examines type hints, defaults, and parameter kinds
+3. **Generating models**: Creates Pydantic models that match function signatures
+4. **Preserving structure**: Maintains the package's module hierarchy in the generated code
+
+The generated models can be used to:
+
+- Validate function arguments before calling functions
+- Document function parameters with proper type information
+- Generate OpenAPI schemas for Python functions
+- Test function calls with different parameter sets
+
+## 6. Configuration
+
+`mcpup` has sensible defaults but can be customized with CLI options:
+
+- **Output directory**: Where to save generated models (default: `./mcpup_models`)
+- **Module filtering**: Generate models only for specific modules
+- **Private functions**: Option to include private functions (starting with `_`)
+- **Uv integration**: Can install packages automatically using `uv`
 
 For further details, consult the [API Reference](api/index.md) or the help text:
 
 ```bash
-datapasta --help
+mcpup --help
 ```

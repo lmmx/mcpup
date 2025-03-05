@@ -1,0 +1,3 @@
+# scanner
+
+::: mcpup.scanner
