@@ -53,6 +53,7 @@ result = some_function(**valid_args.model_dump(exclude_unset=True))
 
 
 def test_main():
+    """Run the main demo."""
     main()
 
 
