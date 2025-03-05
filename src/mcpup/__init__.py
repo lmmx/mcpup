@@ -1,1 +1,3 @@
-"""Generate MCP schema for an entire Python package."""
+"""Generate Pydantic models for your Python package functions 🐶."""
+
+__version__ = "0.1.0"
