@@ -2,6 +2,15 @@
 build-backend = "uv_build"
 requires = ["uv_build>=0.11.6,<0.12"]
 
+[dependency-groups]
+dev = [
+  "pdbpp>=0.12.1"
+]
+test = [
+  "pytest>=8.3.5",
+  "requests>=2.32.3"
+]
+
 [project]
 authors = [
   {email = "louismmx@gmail.com", name = "Louis Maddox"}
@@ -77,15 +86,5 @@ select = [
   "W"
 ]
 
-[dependency-groups]
-dev = [
-    "pdbpp>=0.12.1",
-]
-test = [
-    "pytest>=8.3.5",
-    "requests>=2.32.3",
-]
-
 [tool.uv]
 default-groups = ["dev", "test"]
-
