@@ -6,6 +6,15 @@ requires = ["uv_build>=0.11.6,<0.12"]
 dev = [
   "pdbpp>=0.12.1"
 ]
+docs = [
+  "livereload>=2.7.1",
+  "mkdocs-material[recommended,imaging]>=9.5.2",
+  "mkdocs-section-index>=0.3.8",
+  "mkdocs>=1.5.3",
+  "mkdocstrings[python]>=0.24.0",
+  "ruff>=0.9.5",
+  "urllib3<2"
+]
 test = [
   "pytest>=8.3.5",
   "requests>=2.32.3"
@@ -45,21 +54,6 @@ version = "0.1.1"
 
 [project.license]
 text = "MIT"
-
-[project.optional-dependencies]
-dev = []
-test = [
-  "pytest>=8.3.4"
-]
-docs = [
-  "livereload>=2.7.1",
-  "mkdocs-material[recommended,imaging]>=9.5.2",
-  "mkdocs-section-index>=0.3.8",
-  "mkdocs>=1.5.3",
-  "mkdocstrings[python]>=0.24.0",
-  "ruff>=0.9.5",
-  "urllib3<2"
-]
 
 [project.scripts]
 mcpup = "mcpup.cli:cli"
