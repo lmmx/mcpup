@@ -8,7 +8,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-13T12:18:52.426236319Z"
+exclude-newer = "2026-04-13T12:35:12.062541355Z"
 exclude-newer-span = "P3D"
 
 [[package]]
@@ -480,7 +480,7 @@ wheels = [
 
 [[package]]
 name = "mcpup"
-version = "0.1.1"
+version = "0.1.2"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -489,7 +489,10 @@ dependencies = [
     { name = "rich" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
+dev = [
+    { name = "pdbpp" },
+]
 docs = [
     { name = "livereload" },
     { name = "mkdocs" },
@@ -501,36 +504,28 @@ docs = [
 ]
 test = [
     { name = "pytest" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pdbpp" },
-]
-test = [
-    { name = "pytest" },
     { name = "requests" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "click", specifier = ">=8.3" },
-    { name = "livereload", marker = "extra == 'docs'", specifier = ">=2.7.1" },
-    { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.5.3" },
-    { name = "mkdocs-material", extras = ["recommended", "imaging"], marker = "extra == 'docs'", specifier = ">=9.5.2" },
-    { name = "mkdocs-section-index", marker = "extra == 'docs'", specifier = ">=0.3.8" },
-    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.24.0" },
     { name = "pydantic", specifier = ">=2.12.0" },
     { name = "pydantic-function-models", specifier = ">=0.1.10" },
-    { name = "pytest", marker = "extra == 'test'", specifier = ">=8.3.4" },
     { name = "rich", specifier = ">=15" },
-    { name = "ruff", marker = "extra == 'docs'", specifier = ">=0.9.5" },
-    { name = "urllib3", marker = "extra == 'docs'", specifier = "<2" },
 ]
-provides-extras = ["dev", "test", "docs"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pdbpp", specifier = ">=0.12.1" }]
+docs = [
+    { name = "livereload", specifier = ">=2.7.1" },
+    { name = "mkdocs", specifier = ">=1.5.3" },
+    { name = "mkdocs-material", extras = ["recommended", "imaging"], specifier = ">=9.5.2" },
+    { name = "mkdocs-section-index", specifier = ">=0.3.8" },
+    { name = "mkdocstrings", extras = ["python"], specifier = ">=0.24.0" },
+    { name = "ruff", specifier = ">=0.9.5" },
+    { name = "urllib3", specifier = "<2" },
+]
 test = [
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "requests", specifier = ">=2.32.3" },
