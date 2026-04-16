@@ -14,5 +14,6 @@ wheels/
 .pdm-python
 
 mcpup_models
+generated_models
 
 site

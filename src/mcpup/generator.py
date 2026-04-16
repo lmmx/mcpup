@@ -95,6 +95,7 @@ def generate_models(functions: list[FunctionInfo], output_dir: Path) -> list[Pat
         List of paths to generated model files
 
     """
+    output_dir.mkdir(parents=True, exist_ok=True)
     # Create a directory structure based on modules
     generated_files = []
 
