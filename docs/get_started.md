@@ -115,14 +115,17 @@ Let's walk through a complete example using `mcpup` to generate models for the p
    from requests_models.requests.api import Get
 
    # Validate parameters for requests.get
-   params = Get.model.model_validate({
-       "url": "https://api.github.com/users/octocat",
-       "params": {"page": 1},
-       "headers": {"Accept": "application/json"}
-   })
+   params = Get.model.model_validate(
+       {
+           "url": "https://api.github.com/users/octocat",
+           "params": {"page": 1},
+           "headers": {"Accept": "application/json"},
+       }
+   )
 
    # Call the function with validated parameters
    import requests
+
    response = requests.get(**params.model_dump(exclude_unset=True))
    ```
 
@@ -130,10 +133,9 @@ Let's walk through a complete example using `mcpup` to generate models for the p
    ```python
    try:
        # This will fail validation (timeout should be a float or int)
-       params = Get.model.model_validate({
-           "url": "https://api.github.com/users/octocat",
-           "timeout": "not-a-number"
-       })
+       params = Get.model.model_validate(
+           {"url": "https://api.github.com/users/octocat", "timeout": "not-a-number"}
+       )
    except Exception as e:
        print(f"Validation error: {e}")
    ```

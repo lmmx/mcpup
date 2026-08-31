@@ -101,13 +101,11 @@ After generating models, you can use them to validate function arguments:
 from mcpup_models.mypackage.mymodule import MyFunction
 
 # Validate function arguments
-valid_args = MyFunction.model.model_validate({
-    "arg1": "value",
-    "arg2": 123
-})
+valid_args = MyFunction.model.model_validate({"arg1": "value", "arg2": 123})
 
 # Call the function with validated arguments
 from mypackage.mymodule import my_function
+
 result = my_function(**valid_args.model_dump(exclude_unset=True))
 ```
 
